@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ItemService {
@@ -20,6 +22,8 @@ public class ItemService {
     private final AtomicInteger processedCount = new AtomicInteger(0);
     private List<Item> processedItems = new CopyOnWriteArrayList<>();
 
+    // Email regex pattern
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
     public List<Item> findAll() {
         return itemRepository.findAll();
@@ -29,7 +33,17 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
+    // Method to validate email using regex
+    public boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
     public Item save(Item item) {
+        if (!isEmailValid(item.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
         return itemRepository.save(item);
     }
 
