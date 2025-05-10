@@ -50,6 +50,13 @@ class InternshipApplicationTests {
                 .andExpect(jsonPath("$[0].name").value("Item Name"))
                 .andExpect(jsonPath("$[0].description").value("Description"))
                 .andExpect(jsonPath("$[0].email").value("email@example.com"));
+
+        // Test getItemById
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/items/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Item Name"))
+                .andExpect(jsonPath("$.description").value("Description"))
+                .andExpect(jsonPath("$.email").value("email@example.com"));
     }
 
     @Test
