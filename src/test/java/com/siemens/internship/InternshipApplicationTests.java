@@ -57,6 +57,20 @@ class InternshipApplicationTests {
                 .andExpect(jsonPath("$.name").value("Item Name"))
                 .andExpect(jsonPath("$.description").value("Description"))
                 .andExpect(jsonPath("$.email").value("email@example.com"));
+
+        // Test updateItem
+        validItem.setEmail("emailUpdated@example.com");
+        validItem.setName("Item updated");
+        itemJson = objectMapper.writeValueAsString(validItem);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/items/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(itemJson))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name").value("Item updated"))
+                .andExpect(jsonPath("$.description").value("Description"))
+                .andExpect(jsonPath("$.email").value("emailUpdated@example.com"));
+
     }
 
     @Test
