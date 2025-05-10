@@ -46,7 +46,7 @@ public class ItemController {
         Optional<Item> existingItem = itemService.findById(id);
         if (existingItem.isPresent()) {
             item.setId(id);
-            return new ResponseEntity<>(itemService.save(item), HttpStatus.CREATED);
+            return new ResponseEntity<>(itemService.save(item), HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
