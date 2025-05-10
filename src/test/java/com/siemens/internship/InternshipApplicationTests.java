@@ -42,4 +42,22 @@ class InternshipApplicationTests {
                 .andExpect(jsonPath("$.description").value("Description"))
                 .andExpect(jsonPath("$.email").value("email@example.com"));
     }
+
+    @Test
+    void testForItemInvalid() throws Exception {
+        // Create an invalid item
+        Item validItem = new Item();
+        validItem.setName("Item Name");
+        validItem.setDescription("Description");
+        validItem.setEmail("email");
+
+        // Convert the Item object to JSON using ObjectMapper
+        String itemJson = objectMapper.writeValueAsString(validItem);
+
+        // Test createItem
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(itemJson))
+                .andExpect(status().isBadRequest());
+    }
 }
