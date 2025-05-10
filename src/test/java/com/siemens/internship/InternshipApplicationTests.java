@@ -71,6 +71,15 @@ class InternshipApplicationTests {
                 .andExpect(jsonPath("$.description").value("Description"))
                 .andExpect(jsonPath("$.email").value("emailUpdated@example.com"));
 
+        // Test deleteItem
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/items/1"))
+                .andExpect(status().isAccepted());
+
+        // Test if list is empty
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/items"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+
     }
 
     @Test
